@@ -39,6 +39,30 @@ const get_all_category = async (req, res) => {
     }
 }
 
+const get_category = async (req, res) => {
+    try {
+        const { _id } = req.params;
+        const category = await Category.findById(_id);
+        if (!category) {
+            res.status(404).json({
+                success: false,
+                message: "Không tìm thấy danh mục"
+            })
+        }
+        res.status(200).json({
+            success: true,
+            message: "Thành công",
+            category: category
+        })
+    } catch (error) {
+        console.log(`Lỗi: ${error.message}`);
+        res.status(500).json({
+            success: false,
+            message: "Lỗi máy chủ"
+        })
+    }
+}
+
 const create_category = async (req, res) => {
     try {
         const { name } = req.body;
@@ -185,6 +209,7 @@ const delete_category = async (req, res) => {
 
 module.exports = {
     get_all_category,
+    get_category,
     create_category,
     edit_category,
     edit_delete_category,
